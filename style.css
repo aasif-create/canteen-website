@@ -38,6 +38,10 @@
     display: inline-block;
     text-align: center;
 }
+.nav-tabs {
+  border-bottom: none !important;
+}
+
 .nav-tabs .nav-link{
     transition: .3s;
 }
@@ -139,8 +143,27 @@ clip-path: polygon(0% 0%, 100% 0, 100% 50%, 100% 100%, 0% 100%);
     border: 1px solid #b4abab;
     padding-right:5px;
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05); /* subtle shadow */
+    box-shadow: 10px 10px 8px rgba(0,0,0,0.05);
+}
+.plus,.minus{
+    border:1px solid #ff004f;
+    border-radius:5px;
+    width:30px;
+    text-align: center;
+    background-color: #ff004f;
+    color:white;
+    font-weight: 400;
+    font-size: 20px;
+    cursor:pointer;
+}
+.plus:active, .minus:active {
+  transform: scale(0.85);
+  transition: transform 0.1s;
 
+}
+.quantity {
+  width: 100px;
+  text-align: center;
 }
 @media only screen and (max-width: 600px) {
     .menu_content {
