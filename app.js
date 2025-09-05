@@ -1,3 +1,8 @@
+// ✅ Load tokenCounter from localStorage (if exists), else start at 1
+let tokenCounter = localStorage.getItem("tokenCounter") 
+  ? parseInt(localStorage.getItem("tokenCounter")) 
+  : 1;
+
 // Add / Subtract button functionality
 document.querySelectorAll(".single_menu").forEach(menu => {
   const plus = menu.querySelector(".plus");
@@ -16,7 +21,7 @@ document.querySelectorAll(".single_menu").forEach(menu => {
   });
 });
 
-// Bill generating
+// ✅ Bill generating with Sequential Token Number (Persistent)
 document.getElementById("generateBill").addEventListener("click", function () {
   const items = document.querySelectorAll(".single_menu");
   let billList = document.getElementById("modalBillItems");
@@ -40,6 +45,14 @@ document.getElementById("generateBill").addEventListener("click", function () {
   });
 
   if (total > 0) {
+    // 🎟️ Assign sequential token number
+    document.getElementById("tokenNumber").textContent = `🎟️ Token #${tokenCounter}`;
+
+    // Increase and save tokenCounter in localStorage
+    tokenCounter++;
+    localStorage.setItem("tokenCounter", tokenCounter);
+
+    // Set grand total
     document.getElementById("modalGrandTotal").textContent = `Grand Total: ₹${total}`;
 
     // Show the modal
@@ -50,7 +63,7 @@ document.getElementById("generateBill").addEventListener("click", function () {
   }
 });
 
-// Screenshot functionality
+// ✅ Screenshot functionality
 document.getElementById("screenshotBill").addEventListener("click", function () {
   const billContent = document.querySelector("#billModal .modal-content");
   html2canvas(billContent).then(canvas => {
@@ -59,4 +72,22 @@ document.getElementById("screenshotBill").addEventListener("click", function () 
     link.href = canvas.toDataURL();
     link.click();
   });
+});
+
+// Confirm Order functionality
+// Confirm Order functionality
+document.getElementById("confirmOrder").addEventListener("click", function () {
+  alert("✅ Order Confirmed!\nPlease wait for your Token Number to be called.");
+
+  // Reset all quantities back to 0 for next student
+  document.querySelectorAll(".quantity").forEach(input => {
+    input.value = 0;
+  });
+
+  // Close the modal
+  let billModal = bootstrap.Modal.getInstance(document.getElementById('billModal'));
+  billModal.hide();
+
+  // Re-enable confirm button for next use
+  document.getElementById("confirmOrder").disabled = false;
 });
