@@ -133,3 +133,31 @@ document.getElementById("confirmOrder").addEventListener("click", function () {
   // Re-enable confirm button for next use (keeps previous behavior)
   document.getElementById("confirmOrder").disabled = false;
 });
+
+
+
+// Track order by token number
+function trackOrder() {
+  const token = document.getElementById("trackToken").value;
+  const bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+  const servedOrders = JSON.parse(localStorage.getItem("servedOrders")) || [];
+
+  // Search active orders first
+  let order = bookings.find(o => o.token == token);
+
+  // If not found, check served orders
+  if (!order) {
+    order = servedOrders.find(o => o.token == token);
+  }
+
+  if (order) {
+    document.getElementById("orderStatus").textContent =
+      `Status for Token #${order.token}: ${order.status}`;
+  } else {
+    document.getElementById("orderStatus").textContent =
+      "No order found for this token.";
+  }
+}
+
+// Hook up button
+document.getElementById("trackBtn").addEventListener("click", trackOrder);
