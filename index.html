@@ -16,7 +16,9 @@
         <div class="col-lg-12">
           <div class="page_title text-center ">
             <h1>our canteen menu</h1>
-            <div class="single_line"></div>
+            <div class="text-center mt-4">
+              <button id="generateBill" class="btn btn-success">Generate Bill</button>
+            </div>            
           </div>
         </div>
       </div>
@@ -42,7 +44,7 @@
               <div class="col-md-6">
 
                 <div class="single_menu">
-                  <img src="images/eggpuff.jpg" alt="soda">
+                  <img src="images/eggpuff2.jpg" alt="soda">
                   <div class="menu_content">
                     <h4>Egg puff <span>₹15</span></h4>
                     <p>Flaky puff stuffed with spiced egg filling.</p>
@@ -188,9 +190,9 @@
       </div>
     </div>
   </section>
-    <div class="text-center mt-4">
+    <!-- <div class="text-center mt-4">
       <button id="generateBill" class="btn btn-success">Generate Bill</button>
-    </div>
+    </div> -->
 
     <!-- Bill Modal -->
     <div class="modal fade" id="billModal" tabindex="-1" aria-labelledby="billModalLabel" aria-hidden="true">
@@ -200,18 +202,22 @@
             <h5 class="modal-title" id="billModalLabel">🧾 Bill Summary</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-            <div class="modal-body">
+          <div class="modal-body">
             <h6 id="tokenNumber" class="text-center mb-3"></h6> <!-- Token number -->
             <ul id="modalBillItems" class="receipt-list"></ul>
+
             <div class="receipt-total">
               <h4 id="modalGrandTotal"></h4>
+            </div>
+            <div class="note">
+              <span>Note :</span> Take Screenshot before Confirming the order
             </div>
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="confirmOrder">Confirm Order</button>
+            <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
             <button type="button" class="btn btn-success" id="screenshotBill">📸 Screenshot</button>
+            <button type="button" class="btn btn-primary" id="confirmOrder">Confirm Order</button>
           </div>
 
         </div>

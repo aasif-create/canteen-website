@@ -1,0 +1,69 @@
+:root{
+  --brand: #c0392b;  /* red (your theme) */
+  --accent: #fbc531; /* gold */
+  --ok: #27ae60;     /* green */
+  --muted: #6b7280;
+  --card: #fff;
+}
+
+body{
+  font-family: Inter, system-ui, Arial, sans-serif;
+  background: #f7f8fb;
+  color: #111;
+  margin: 0;
+  -webkit-font-smoothing:antialiased;
+}
+
+.topbar{
+  background: linear-gradient(90deg, var(--brand), #2b6cb0cc);
+  color: white;
+}
+
+.container { max-width: 1100px; }
+
+#detectedKey { font-size: 13px; color: var(--muted); }
+
+/* table adjustments */
+.table thead th {
+  border-bottom: 2px solid rgba(0,0,0,0.03);
+  font-size: 14px;
+}
+.table tbody td {
+  vertical-align: middle;
+  font-size: 14px;
+}
+
+/* status badges */
+.status-badge {
+  display:inline-block;
+  padding:6px 10px;
+  border-radius: 999px;
+  font-weight:700;
+  font-size:13px;
+  color: white;
+}
+.status-pending { background: var(--brand); }    /* pending = brand red */
+.status-prepared { background: #d69e2e; }         /* prepared = gold-ish */
+.status-served { background: var(--ok); }         /* served = green */
+
+/* action buttons (unstyled bootstrap-like) */
+.action-btn {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #e6e9ef;
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  margin-left: 6px;
+}
+.action-btn.prepare { border-color: #d69e2e; color: #b77b1a; }
+.action-btn.serve { border-color: var(--ok); color: var(--ok); }
+.action-btn.delete { border-color: #e74c3c; color: #e74c3c; }
+
+/* responsive card style for small screens */
+@media (max-width: 700px) {
+  .table thead { display: none; }
+  .table tbody td { display: block; width: 100%; }
+  .table tbody tr { margin-bottom: 12px; display: block; background: var(--card); padding: 12px; border-radius: 8px; }
+  .table tbody td::before { font-weight: 700; display:block; margin-bottom:6px; }
+}

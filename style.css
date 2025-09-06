@@ -210,10 +210,15 @@ clip-path: polygon(0% 0%, 100% 0, 100% 50%, 100% 100%, 0% 100%);
   color: #27ae60;
 }
 
-
+.note>span{
+    color:red;
+}
 
 @media only screen and (max-width: 600px) {
     .menu_content {
     padding-left: 150px;
 }
+    span{
+        margin-right: 7px;
+    }
 } 

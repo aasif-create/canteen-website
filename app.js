@@ -1,6 +1,6 @@
 // ✅ Load tokenCounter from localStorage (if exists), else start at 1
-let tokenCounter = localStorage.getItem("tokenCounter") 
-  ? parseInt(localStorage.getItem("tokenCounter")) 
+let tokenCounter = localStorage.getItem("tokenCounter")
+  ? parseInt(localStorage.getItem("tokenCounter"))
   : 1;
 
 // Add / Subtract button functionality
@@ -45,10 +45,10 @@ document.getElementById("generateBill").addEventListener("click", function () {
   });
 
   if (total > 0) {
-    // 🎟️ Assign sequential token number
+    // 🎟️ Assign sequential token number (display current, then increment)
     document.getElementById("tokenNumber").textContent = `🎟️ Token #${tokenCounter}`;
 
-    // Increase and save tokenCounter in localStorage
+    // Increase and save tokenCounter in localStorage (this matches your previous behavior)
     tokenCounter++;
     localStorage.setItem("tokenCounter", tokenCounter);
 
@@ -74,10 +74,52 @@ document.getElementById("screenshotBill").addEventListener("click", function () 
   });
 });
 
-// Confirm Order functionality
-// Confirm Order functionality
+// ✅ Confirm Order functionality — UPDATED to save booking into localStorage "bookings"
 document.getElementById("confirmOrder").addEventListener("click", function () {
   alert("✅ Order Confirmed!\nPlease wait for your Token Number to be called.");
+
+  // Collect order details again (safe to recalc)
+  const items = document.querySelectorAll(".single_menu");
+  let orderItems = [];
+  let total = 0;
+
+  items.forEach(item => {
+    const name = item.querySelector("h4").childNodes[0].textContent.trim();
+    const priceText = item.querySelector("h4 span").textContent.replace("₹", "").trim();
+    const price = parseInt(priceText);
+    const qty = parseInt(item.querySelector(".quantity").value) || 0;
+
+    if (qty > 0) {
+      let amount = qty * price;
+      total += amount;
+      orderItems.push({ name, qty, price, amount });
+    }
+  });
+
+  // Safety: if total is 0 for some reason, don't save
+  if (orderItems.length === 0 || total === 0) {
+    // Reset quantities and close modal as fallback (this shouldn't normally happen)
+    document.querySelectorAll(".quantity").forEach(input => input.value = 0);
+    let billModalFallback = bootstrap.Modal.getInstance(document.getElementById('billModal'));
+    if (billModalFallback) billModalFallback.hide();
+    document.getElementById("confirmOrder").disabled = false;
+    return;
+  }
+
+  // ✅ Save order in localStorage for staff (key: "bookings")
+  // NOTE: generateBill incremented tokenCounter after showing the modal,
+  // so the actual token number used for this booking is tokenCounter - 1
+  const assignedToken = tokenCounter - 1;
+
+  let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+  bookings.push({
+    token: assignedToken,
+    items: orderItems,
+    total: total,
+    time: new Date().toLocaleString(),
+    status: "Pending"
+  });
+  localStorage.setItem("bookings", JSON.stringify(bookings));
 
   // Reset all quantities back to 0 for next student
   document.querySelectorAll(".quantity").forEach(input => {
@@ -86,8 +128,8 @@ document.getElementById("confirmOrder").addEventListener("click", function () {
 
   // Close the modal
   let billModal = bootstrap.Modal.getInstance(document.getElementById('billModal'));
-  billModal.hide();
+  if (billModal) billModal.hide();
 
-  // Re-enable confirm button for next use
+  // Re-enable confirm button for next use (keeps previous behavior)
   document.getElementById("confirmOrder").disabled = false;
 });
