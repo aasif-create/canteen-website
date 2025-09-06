@@ -6,232 +6,253 @@
   <title>Nabeel's page</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <!-- bootstrap css -->
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-  <section id="our_menu" class="">
+
+  <!--  Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="page_title text-center ">
-            <h1>our canteen menu</h1>
-            <div class="text-center mt-4">
-              <button id="generateBill" class="btn btn-success">Generate Bill</button>
-            </div>            
-          </div>
-        </div>
+      <a class="navbar-brand" href="#">Canteen</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#" id="navMenu">Menu</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="navOrders">My Orders</a>
+          </li>
+        </ul>
       </div>
-      <!-- Track Order Section -->
-      <div class="track-order">
-        <h3>Track My Order</h3>
-        <input type="number" id="trackToken" placeholder="Enter your token number">
-        <button id="trackBtn">Check Status</button>
-        <p id="orderStatus"></p>
+    </div>
+  </nav>
+
+  <!--  Menu Section -->
+  <section id="menuSection" class="mt-4">
+    <div class="container">
+      <div class="text-center">
+        <h1>Our Canteen Menu</h1>
+        <button id="generateBill" class="btn btn-success mt-3">Generate Bill</button>
       </div>
 
-      <!--  Added Nav Tabs just below the single line -->
-      <ul class="nav nav-tabs justify-content-center mt-3" id="menuTabs" role="tablist">
+      <!-- Nav Tabs -->
+      <ul class="nav nav-tabs justify-content-center mt-4" id="menuTabs" role="tablist">
         <li class="nav-item" role="presentation">
           <button class="nav-link active" id="snacks-tab" data-bs-toggle="tab" data-bs-target="#snacks" type="button" role="tab">Snacks</button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" id="juices-tab" data-bs-toggle="tab" data-bs-target="#juices" type="button" role="tab">Juice</button>
+          <button class="nav-link" id="juices-tab" data-bs-toggle="tab" data-bs-target="#juices" type="button" role="tab">Juices</button>
         </li>
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="lunch-tab" data-bs-toggle="tab" data-bs-target="#lunch" type="button" role="tab">Lunch</button>
         </li>
       </ul>
-      <!--  Nav Tabs end -->
 
-      <div class="row">
-        <div class="tab-content col-lg-12" id="myTabContent">
-          <div class="tab-pane fade show active" id="snacks" role="tabpanel" aria-labelledby="snacks-tab">
-            <div class="row">
-              <div class="col-md-6">
+      <!-- Menu Items -->
+      <div class="tab-content mt-4" id="myTabContent">
 
-                <div class="single_menu">
-                  <img src="images/eggpuff2.jpg" alt="soda">
-                  <div class="menu_content">
-                    <h4>Egg puff <span>₹15</span></h4>
-                    <p>Flaky puff stuffed with spiced egg filling.</p>
-                    <button class="plus" type="button">+</button>
-                    <input type="text" class="quantity">
-                    <button class="minus" type="button">-</button>
-                  </div>
+        <!-- Snacks -->
+        <div class="tab-pane fade show active" id="snacks" role="tabpanel" aria-labelledby="snacks-tab">
+          <div class="row">
+            <div class="col-md-6">
 
+              <div class="single_menu">
+                <img src="images/eggpuff2.jpg" alt="Egg Puff">
+                <div class="menu_content">
+                  <h4>Egg Puff <span>₹15</span></h4>
+                  <p>Flaky puff stuffed with spiced egg filling.</p>
+                  <button class="plus" type="button">+</button>
+                  <input type="number" class="quantity" min="0" value="0">
+                  <button class="minus" type="button">-</button>
                 </div>
-
-                <div class="single_menu">
-                  <img src="images/samosa.jpg" alt="soda">
-                  <div class="menu_content">
-                    <h4>Samosa <span>₹15 </span></h4>
-                    <p>Crispy triangle packed with masala potatoes.</p>
-                    <button class="plus" type="button">+</button>
-                    <input type="text" class="quantity">
-                    <button class="minus" type="button">-</button>
-                  </div>
-                </div>
-
-                <div class="single_menu">
-                  <img src="images/cutlet.jpg" alt="soda">
-                  <div class="menu_content">
-                    <h4>Cutlet <span>₹13 </span></h4>
-                    <p>Golden-fried snack loaded with veggies & spice.</p>
-					          <button class="plus" type="button">+</button>
-                    <input type="text" class="quantity">
-                    <button class="minus" type="button">-</button>
-                  </div>
-                </div>
-
               </div>
+
+              <div class="single_menu">
+                <img src="images/samosa.jpg" alt="Samosa">
+                <div class="menu_content">
+                  <h4>Samosa <span>₹15</span></h4>
+                  <p>Crispy triangle packed with masala potatoes.</p>
+                  <button class="plus" type="button">+</button>
+                  <input type="number" class="quantity" min="0" value="0">
+                  <button class="minus" type="button">-</button>
+                </div>
+              </div>
+
+              <div class="single_menu">
+                <img src="images/cutlet.jpg" alt="Cutlet">
+                <div class="menu_content">
+                  <h4>Cutlet <span>₹13</span></h4>
+                  <p>Golden-fried snack loaded with veggies & spice.</p>
+                  <button class="plus" type="button">+</button>
+                  <input type="number" class="quantity" min="0" value="0">
+                  <button class="minus" type="button">-</button>
+                </div>
+              </div>
+
             </div>
           </div>
-
-          <div class="tab-pane fade" id="juices" role="tabpanel" aria-labelledby="juices-tab">
-            <div class="row">
-              <div class="col-md-6">
-
-                <div class="single_menu">
-                  <img src="images/bluesoda.jpg" alt="soda">
-                  <div class="menu_content">
-                    <h4>Blue Soda <span>₹12 </span></h4>
-                    <p>Cool & fizzy with a tangy twist.</p>
-                    <button class="plus" type="button">+</button>
-                    <input type="text" class="quantity">
-                    <button class="minus" type="button">-</button>
-                  </div>
-                </div>
-
-                <div class="single_menu">
-                  <img src="images/greensoda2.jpg" alt="soda">
-                  <div class="menu_content">
-                    <h4>Green Soda <span>₹12 </span></h4>
-                    <p>Refreshing burst of minty flavour.</p>
-                    <button class="plus" type="button">+</button>
-                    <input type="text" class="quantity">
-                    <button class="minus" type="button">-</button>
-                  </div>
-                </div>
-
-                <div class="single_menu">
-                  <img src="images/orangesoda.jpg" alt="soda">
-                  <div class="menu_content">
-                    <h4>Orange Soda <span>₹12 </span></h4>
-                    <p>Zesty orange fizz to energize your day.</p>
-                    <button class="plus" type="button">+</button>
-                    <input type="text" class="quantity">
-                    <button class="minus" type="button">-</button>
-                  </div>
-                </div>
-
-                <div class="single_menu">
-                  <img src="images/mangojuice.jpg" alt="soda">
-                  <div class="menu_content">
-                    <h4>Mango Juice <span>₹10 </span></h4>
-                    <p>Sweet, pulpy & everyone’s summer favourite.</p>
-                    <button class="plus" type="button">+</button>
-                    <input type="text" class="quantity">
-                    <button class="minus" type="button">-</button>
-                  </div>
-                </div>
-
-                <div class="single_menu">
-                  <img src="images/7up.jpg" alt="soda">
-                  <div class="menu_content">
-                    <h4>7 Up <span>₹12 </span></h4>
-                    <p>Crisp lemon-lime soda to refresh instantly.</p>
-                    <button class="plus" type="button">+</button>
-                    <input type="text" class="quantity">
-                    <button class="minus" type="button">-</button>
-                  </div>
-
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="tab-pane fade" id="lunch" role="tabpanel" aria-labelledby="lunch-tab">
-            <div class="row">
-              <div class="col-md-6">
-
-                <div class="single_menu">
-                  <img src="images/friedrice.avif" alt="Fried rice">
-                  <div class="menu_content">
-                    <h4>Fried Rice <span>₹50 </span></h4>
-                    <p>Stir-fried rice loaded with veggies & spices.</p>
-                    <button class="plus">+</button>
-                    <input type="text" class="quantity">
-                    <button class="minus">-</button>
-                  </div>
-                </div>
-
-                <div class="single_menu">
-                  <img src="images/hyderabadibiriyani.jpg" alt="Biriyani">
-                  <div class="menu_content">
-                    <h4> Biriyani <span>₹60 </span></h4>
-                    <p>Authentic biriyani with rich aroma & taste.</p>
-                    <button class="plus">+</button>
-                    <input type="text" class="quantity">
-                    <button class="minus">-</button>
-                  </div>
-                </div>
-
-                <div class="single_menu">
-                  <img src="images/biriyani.jpg" alt="Kushka">
-                  <div class="menu_content">
-                    <h4>Kushka <span>₹30 </span></h4>
-                    <p>Flavourful biriyani rice served without meat.</p>
-                    <button class="plus">+</button>
-                    <input type="text" class="quantity">
-                    <button class="minus">-</button>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
         </div>
+
+        <!-- Juices -->
+        <div class="tab-pane fade" id="juices" role="tabpanel" aria-labelledby="juices-tab">
+          <div class="row">
+            <div class="col-md-6">
+
+              <div class="single_menu">
+                <img src="images/bluesoda.jpg" alt="Blue Soda">
+                <div class="menu_content">
+                  <h4>Blue Soda <span>₹12</span></h4>
+                  <p>Cool & fizzy with a tangy twist.</p>
+                  <button class="plus" type="button">+</button>
+                  <input type="number" class="quantity" min="0" value="0">
+                  <button class="minus" type="button">-</button>
+                </div>
+              </div>
+
+              <div class="single_menu">
+                <img src="images/greensoda2.jpg" alt="Green Soda">
+                <div class="menu_content">
+                  <h4>Green Soda <span>₹12</span></h4>
+                  <p>Refreshing burst of minty flavour.</p>
+                  <button class="plus" type="button">+</button>
+                  <input type="number" class="quantity" min="0" value="0">
+                  <button class="minus" type="button">-</button>
+                </div>
+              </div>
+
+              <div class="single_menu">
+                <img src="images/orangesoda.jpg" alt="Orange Soda">
+                <div class="menu_content">
+                  <h4>Orange Soda <span>₹12</span></h4>
+                  <p>Zesty orange fizz to energize your day.</p>
+                  <button class="plus" type="button">+</button>
+                  <input type="number" class="quantity" min="0" value="0">
+                  <button class="minus" type="button">-</button>
+                </div>
+              </div>
+
+              <div class="single_menu">
+                <img src="images/mangojuice.jpg" alt="Mango Juice">
+                <div class="menu_content">
+                  <h4>Mango Juice <span>₹10</span></h4>
+                  <p>Sweet, pulpy & everyone’s summer favourite.</p>
+                  <button class="plus" type="button">+</button>
+                  <input type="number" class="quantity" min="0" value="0">
+                  <button class="minus" type="button">-</button>
+                </div>
+              </div>
+
+              <div class="single_menu">
+                <img src="images/7up.jpg" alt="7 Up">
+                <div class="menu_content">
+                  <h4>7 Up <span>₹12</span></h4>
+                  <p>Crisp lemon-lime soda to refresh instantly.</p>
+                  <button class="plus" type="button">+</button>
+                  <input type="number" class="quantity" min="0" value="0">
+                  <button class="minus" type="button">-</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Lunch -->
+        <div class="tab-pane fade" id="lunch" role="tabpanel" aria-labelledby="lunch-tab">
+          <div class="row">
+            <div class="col-md-6">
+
+              <div class="single_menu">
+                <img src="images/friedrice.avif" alt="Fried Rice">
+                <div class="menu_content">
+                  <h4>Fried Rice <span>₹50</span></h4>
+                  <p>Stir-fried rice loaded with veggies & spices.</p>
+                  <button class="plus" type="button">+</button>
+                  <input type="number" class="quantity" min="0" value="0">
+                  <button class="minus" type="button">-</button>
+                </div>
+              </div>
+
+              <div class="single_menu">
+                <img src="images/hyderabadibiriyani.jpg" alt="Biriyani">
+                <div class="menu_content">
+                  <h4>Biriyani <span>₹60</span></h4>
+                  <p>Authentic biriyani with rich aroma & taste.</p>
+                  <button class="plus" type="button">+</button>
+                  <input type="number" class="quantity" min="0" value="0">
+                  <button class="minus" type="button">-</button>
+                </div>
+              </div>
+
+              <div class="single_menu">
+                <img src="images/biriyani.jpg" alt="Kushka">
+                <div class="menu_content">
+                  <h4>Kushka <span>₹30</span></h4>
+                  <p>Flavourful biriyani rice served without meat.</p>
+                  <button class="plus" type="button">+</button>
+                  <input type="number" class="quantity" min="0" value="0">
+                  <button class="minus" type="button">-</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
-    <!-- <div class="text-center mt-4">
-      <button id="generateBill" class="btn btn-success">Generate Bill</button>
-    </div> -->
 
-    <!-- Bill Modal -->
-    <div class="modal fade" id="billModal" tabindex="-1" aria-labelledby="billModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content receipt-card">
-          <div class="modal-header">
-            <h5 class="modal-title" id="billModalLabel">🧾 Bill Summary</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <!--  My Orders Section -->
+  <section id="ordersSection" class="container mt-5 d-none">
+    <h2 class="page_title text-center">📋 My Orders</h2>
+    <table class="table table-bordered text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>Token</th>
+          <th>Items</th>
+          <th>Total</th>
+          <th>Time</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="myOrdersBody">
+        <tr><td colspan="5" class="text-muted">No orders yet.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Bill Modal -->
+  <div class="modal fade" id="billModal" tabindex="-1" aria-labelledby="billModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content receipt-card">
+        <div class="modal-header">
+          <h5 class="modal-title" id="billModalLabel">🧾 Bill Summary</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <h6 id="tokenNumber" class="text-center mb-3"></h6>
+          <ul id="modalBillItems" class="receipt-list"></ul>
+          <div class="receipt-total">
+            <h4 id="modalGrandTotal"></h4>
           </div>
-          <div class="modal-body">
-            <h6 id="tokenNumber" class="text-center mb-3"></h6> <!-- Token number -->
-            <ul id="modalBillItems" class="receipt-list"></ul>
-
-            <div class="receipt-total">
-              <h4 id="modalGrandTotal"></h4>
-            </div>
-            <div class="note">
-              <span>Note :</span> Take Screenshot before Confirming the order
-            </div>
+          <div class="note">
+            <span>Note:</span> Take Screenshot before confirming the order.
           </div>
-
-          <div class="modal-footer">
-            <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-            <button type="button" class="btn btn-success" id="screenshotBill">📸 Screenshot</button>
-            <button type="button" class="btn btn-primary" id="confirmOrder">Confirm Order</button>
-          </div>
-
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" id="screenshotBill">📸 Screenshot</button>
+          <button type="button" class="btn btn-primary" id="confirmOrder">Confirm Order</button>
         </div>
       </div>
     </div>
+  </div>
 
-<!-- html2canvas library -->
+  <!--  Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="app.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
