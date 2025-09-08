@@ -1,31 +1,63 @@
+/* ---------------------------
+   staff.css — improved + responsive (phone) + overlay styles
+   Keep existing classes intact so JS & HTML continue working.
+   --------------------------- */
+
+/* Base page */
 body {
   background: #fffdfa;
   font-family: Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #333;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0;
 }
 
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 12px;
+}
+
+/* Title */
 .page_title {
   color: #c0392b;
   font-weight: 700;
   margin-bottom: 20px;
   position: relative;
   text-transform: capitalize;
+  font-size: 1.6rem;
 }
 
+/* Section headings */
 .orders-section h3 {
   color: #c0392b;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
+  font-size: 1.05rem;
 }
 
+/* Table styling */
 table {
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   border-radius: 10px;
   overflow: hidden;
+  background: #fff;
 }
 
+/* Make sure table cells align nicely */
+.table th, .table td {
+  vertical-align: middle;
+}
+
+/* Badges */
 .badge {
   font-size: 0.85rem;
   padding: 6px 10px;
   border-radius: 8px;
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .badge-pending {
@@ -43,15 +75,198 @@ table {
   color: #fff;
 }
 
+/* Actions */
 .btn-action {
-  margin-right: 5px;
+  margin-right: 6px;
 }
 
+/* Clear history button */
 #clearHistory {
   background: #c0392b;
   border: none;
+  color: #fff;
 }
 
 #clearHistory:hover {
   background: #e74c3c;
+  color: #fff;
+}
+
+/* Table hover row */
+.table-hover tbody tr:hover {
+  background-color: #fbfbfb;
+}
+
+/* Make action buttons compact on desktop */
+.btn-action.btn-sm {
+  padding: 6px 8px;
+  font-size: 0.85rem;
+}
+
+/* Table responsive wrapper on small screens handled via parent rules below */
+
+/* ---------------------------
+   Password Overlay (popup) styles
+   The overlay element is created dynamically by JS with id="staffOverlay"
+   and internal markup class ".staff-login-card"
+   --------------------------- */
+
+#staffOverlay {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2500;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  padding: 18px;
+}
+
+.staff-login-card {
+  width: 440px;
+  max-width: 98%;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  font-family: inherit;
+}
+
+.staff-login-card h2 {
+  margin: 6px 0 12px;
+  color: #c0392b;
+  font-size: 1.25rem;
+}
+
+.staff-login-card p.sub {
+  color: #666;
+  margin-bottom: 14px;
+  font-size: 0.95rem;
+}
+
+/* Input and button inside overlay */
+.staff-login-card input[type="password"] {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #e6e6e6;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.staff-login-card .login-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.staff-login-card .login-actions .btn {
+  min-width: 110px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* error message */
+.staff-login-card .login-error {
+  color: #c0392b;
+  margin-top: 10px;
+  font-size: 0.95rem;
+  display: none;
+}
+
+/* Small visual hint for owner (optional) */
+.staff-login-card .hint {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* ---------------------------
+   Mobile-specific (phones) tweaks
+   Applies when screen width <= 600px
+   --------------------------- */
+@media (max-width: 600px) {
+  .container { padding: 10px; }
+
+  .page_title { font-size: 1.35rem; margin-bottom: 14px; }
+
+  .orders-section h3 { font-size: 1rem; margin-bottom: 10px; }
+
+  /* Make tables horizontally scrollable on phones */
+  .orders-section {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Force a comfortable minimum width so people can scroll horizontally
+     and keep table layout intact without collapsing columns onto each other. */
+  .orders-section table {
+    min-width: 780px; /* tweak if you want narrower/wider scroll area */
+  }
+
+  /* Reduce table cell padding to fit more content */
+  .table th, .table td {
+    padding: 8px 10px;
+    font-size: 0.95rem;
+  }
+
+  /* Make action buttons big enough to tap, but stacked when space is constrained */
+  .btn-action {
+    display: inline-block; /* default inline; will get horizontal space on wide phone screens */
+  }
+
+  /* If you want action buttons to stack vertically on very narrow phones,
+     we provide a helper class. Your JS could toggle it if needed. */
+  .btn-action-stack .btn-action {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  /* Badges slightly smaller on phones */
+  .badge { padding: 5px 8px; font-size: 0.8rem; }
+
+  /* Clear history button smaller and more prominent */
+  #clearHistory {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+
+  /* Staff login card on phones: use full width with comfortable paddings */
+  .staff-login-card {
+    width: 100%;
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .staff-login-card input[type="password"] {
+    padding: 10px;
+    font-size: 1rem;
+  }
+
+  .staff-login-card .login-actions .btn {
+    min-width: 100px;
+    padding: 10px;
+  }
+}
+
+/* ---------------------------
+   Minor accessibility + focus styles
+   --------------------------- */
+.staff-login-card input[type="password"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.08);
+  border-color: #c0392b;
+}
+
+/* In case someone wants to hide overlay via CSS instead of DOM removal */
+#staffOverlay[aria-hidden="true"] {
+  display: none;
 }

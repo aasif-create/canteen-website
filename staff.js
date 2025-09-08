@@ -1,237 +1,126 @@
-// staff.js (robust version) - expects staff.html to have tbody IDs: activeOrders, servedOrders
+// staff.js (realtime)
+import {
+  ref, onValue, update, remove, push, get
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+
 (function () {
-  'use strict';
+  "use strict";
 
-  // Helper: escape HTML
-  function escapeHtml(str) {
-    return String(str || '').replace(/[&<>"']/g, s => ({
-      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-    })[s]);
-  }
+  const activeTbody = document.getElementById("activeOrders");
+  const servedTbody = document.getElementById("servedOrders");
+  const clearHistoryBtn = document.getElementById("clearHistory");
 
-  // Heuristics to detect bookings-like arrays in localStorage
-  const POSSIBLE_KEYS = [
-    'bookings','orders','canteenBookings','bookingsList','ordersList',
-    'cart','userOrders','ordersData','canteen_orders','canteen_bookings'
-  ];
+  const ordersRef = ref(window.db, "orders");
+  const servedRef = ref(window.db, "servedOrders");
 
-  function looksLikeOrder(o){
-    if(!o || typeof o !== 'object') return false;
-    const hasItems = Array.isArray(o.items) && o.items.length>0;
-    const hasDishFields = ['dishName','name','item','title'].some(k => k in o);
-    const hasToken = ['token','id','orderId','token_no','tokenNumber'].some(k => k in o);
-    const hasTotal = ['total','amount','price'].some(k => k in o);
-    return hasItems || hasDishFields || hasToken || hasTotal;
-  }
-
-  function detectBookingsKey(){
-    // First check likely keys
-    for(const k of POSSIBLE_KEYS){
-      try {
-        const raw = localStorage.getItem(k);
-        if(!raw) continue;
-        const parsed = JSON.parse(raw);
-        if(Array.isArray(parsed) && parsed.length>0 && parsed.every(looksLikeOrder)){
-          return k;
-        }
-      } catch(e){}
-    }
-    // Scan all keys
-    for(let i=0;i<localStorage.length;i++){
-      const k = localStorage.key(i);
-      try {
-        const parsed = JSON.parse(localStorage.getItem(k));
-        if(Array.isArray(parsed) && parsed.length>0 && parsed.every(looksLikeOrder)){
-          return k;
-        }
-      } catch(e){}
-    }
-    // fallback
-    return 'bookings';
-  }
-
-  // DOM refs
-  const activeTbody = document.getElementById('activeOrders');
-  const servedTbody = document.getElementById('servedOrders');
-  const clearHistoryBtn = document.getElementById('clearHistory');
-
-  // storage keys
-  const BOOKINGS_KEY = detectBookingsKey(); // typically "bookings"
-  const SERVED_KEY = 'servedOrders';
-
-  // Load / Save
-  function loadBookings() {
-    try {
-      return JSON.parse(localStorage.getItem(BOOKINGS_KEY)) || [];
-    } catch(e){ return []; }
-  }
-  function saveBookings(arr){
-    localStorage.setItem(BOOKINGS_KEY, JSON.stringify(arr));
-  }
-  function loadServed(){
-    try { return JSON.parse(localStorage.getItem(SERVED_KEY)) || []; } catch(e){ return []; }
-  }
-  function saveServed(arr){
-    localStorage.setItem(SERVED_KEY, JSON.stringify(arr));
-  }
-
-  // Render Active orders (Pending + Prepared)
-  function renderActive() {
-    const bookings = loadBookings();
-    activeTbody.innerHTML = '';
-
-    const activeList = bookings; // we'll render all but only show pending/prepared rows
-    if(!activeList.length){
+  function renderActive(orders) {
+    activeTbody.innerHTML = "";
+    if (!orders) {
       activeTbody.innerHTML = `<tr><td colspan="6" class="text-muted">No active orders.</td></tr>`;
       return;
     }
 
-    // For each order we keep the original index so actions target the array entry
-    activeList.forEach((b, idx) => {
-      const status = (b.status || 'Pending');
-      const statusLower = String(status).toLowerCase();
-      // show only Pending or Prepared in Active Orders
-      if(!(statusLower.includes('pending') || statusLower.includes('prepared'))) return;
+    Object.entries(orders).forEach(([id, order]) => {
+      const status = order.status || "Pending";
+      if (status === "Served") return;
 
-      const token = escapeHtml(b.token ?? b.id ?? '');
-      const items = Array.isArray(b.items) ? b.items.map(it => {
-        const name = escapeHtml(it.name || it.dishName || it.title || 'Item');
-        const qty = escapeHtml(it.qty ?? it.quantity ?? 1);
-        const amount = escapeHtml(it.amount ?? it.price ?? it.total ?? '');
-        return `${name} × ${qty} = ₹${amount}`;
-      }).join('<br>') : (escapeHtml(b.dishName || b.name || ''));
+      const itemsHtml = Array.isArray(order.items)
+        ? order.items.map(it => `${it.name || it.dishName} × ${it.qty || 1} = ₹${it.amount || it.price || 0}`).join("<br>")
+        : (order.items || "");
 
-      const total = escapeHtml(b.total ?? b.amount ?? '');
-      const time = escapeHtml(b.time || b.dateTime || b.timestamp || new Date().toLocaleString());
-
-      const badgeClass = statusLower.includes('prepared') ? 'badge-prepared' : 'badge-pending';
-
-      const tr = document.createElement('tr');
+      const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td><strong>${token}</strong></td>
-        <td style="min-width:260px">${items}</td>
-        <td>₹${total}</td>
-        <td>${time}</td>
-        <td><span class="badge ${badgeClass}">${escapeHtml(status)}</span></td>
+        <td><strong>${order.token || "-"}</strong></td>
+        <td style="min-width:260px">${itemsHtml}</td>
+        <td>₹${order.total || 0}</td>
+        <td>${order.time || new Date().toLocaleString()}</td>
+        <td><span class="badge ${status === "Prepared" ? "badge-prepared" : "badge-pending"}">${status}</span></td>
         <td class="text-end">
-          ${ !statusLower.includes('prepared') ? `<button class="btn btn-success btn-sm btn-action prepare-btn" data-idx="${idx}"><i class="fa fa-check"></i> Prepared</button>` : '' }
-          <button class="btn btn-primary btn-sm btn-action serve-btn" data-idx="${idx}"><i class="fa fa-utensils"></i> Served</button>
-          <button class="btn btn-danger btn-sm btn-action delete-btn" data-idx="${idx}"><i class="fa fa-trash"></i> Delete</button>
+          ${status !== "Prepared" ? `<button class="btn btn-success btn-sm prepare-btn" data-id="${id}"><i class="fa fa-check"></i> Prepared</button>` : ""}
+          <button class="btn btn-primary btn-sm serve-btn" data-id="${id}"><i class="fa fa-utensils"></i> Served</button>
+          <button class="btn btn-danger btn-sm delete-btn" data-id="${id}"><i class="fa fa-trash"></i> Delete</button>
         </td>
       `;
       activeTbody.appendChild(tr);
     });
 
-    // if nothing appended because all orders are served, show message
-    if(activeTbody.children.length === 0){
+    if (activeTbody.children.length === 0) {
       activeTbody.innerHTML = `<tr><td colspan="6" class="text-muted">No active orders.</td></tr>`;
     }
-
-    // attach listeners (use event delegation alternative is fine, here we attach)
-    activeTbody.querySelectorAll('.prepare-btn').forEach(btn => btn.addEventListener('click', e => {
-      const i = parseInt(e.currentTarget.dataset.idx);
-      markPrepared(i);
-    }));
-    activeTbody.querySelectorAll('.serve-btn').forEach(btn => btn.addEventListener('click', e => {
-      const i = parseInt(e.currentTarget.dataset.idx);
-      markServed(i);
-    }));
-    activeTbody.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', e => {
-      const i = parseInt(e.currentTarget.dataset.idx);
-      if(confirm('Delete this order?')) deleteActive(i);
-    }));
   }
 
-  // Render served orders (history)
-  function renderServed() {
-    const served = loadServed();
-    servedTbody.innerHTML = '';
-    if(!served || served.length === 0){
+  function renderServed(orders) {
+    servedTbody.innerHTML = "";
+    if (!orders) {
       servedTbody.innerHTML = `<tr><td colspan="5" class="text-muted">No served orders.</td></tr>`;
       return;
     }
+    Object.values(orders).forEach(order => {
+      const itemsHtml = Array.isArray(order.items)
+        ? order.items.map(it => `${it.name || it.dishName} × ${it.qty || 1} = ₹${it.amount || it.price || 0}`).join("<br>")
+        : (order.items || "");
 
-    served.forEach(b => {
-      const token = escapeHtml(b.token ?? b.id ?? '');
-      const items = Array.isArray(b.items) ? b.items.map(it => {
-        const name = escapeHtml(it.name || it.dishName || it.title || 'Item');
-        const qty = escapeHtml(it.qty ?? it.quantity ?? 1);
-        const amount = escapeHtml(it.amount ?? it.price ?? it.total ?? '');
-        return `${name} × ${qty} = ₹${amount}`;
-      }).join('<br>') : (escapeHtml(b.dishName || b.name || ''));
-
-      const total = escapeHtml(b.total ?? b.amount ?? '');
-      const time = escapeHtml(b.time || b.dateTime || b.timestamp || new Date().toLocaleString());
-
-      const tr = document.createElement('tr');
+      const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>${token}</td>
-        <td style="min-width:260px">${items}</td>
-        <td>₹${total}</td>
-        <td>${time}</td>
+        <td>${order.token || "-"}</td>
+        <td style="min-width:260px">${itemsHtml}</td>
+        <td>₹${order.total || 0}</td>
+        <td>${order.time || new Date().toLocaleString()}</td>
         <td><span class="badge badge-served">Served</span></td>
       `;
       servedTbody.appendChild(tr);
     });
   }
 
-  // Actions
-  function markPrepared(index){
-    const bookings = loadBookings();
-    if(!bookings[index]) return;
-    bookings[index].status = 'Prepared';
-    saveBookings(bookings);
-    renderAll();
+  async function markPrepared(id) {
+    await update(ref(window.db, `orders/${id}`), { status: "Prepared" });
   }
 
-  function markServed(index){
-    const bookings = loadBookings();
-    if(!bookings[index]) return;
-    const order = bookings.splice(index, 1)[0];
-    order.status = 'Served';
-    // ensure time exists
-    order.time = order.time || new Date().toLocaleString();
-    const served = loadServed();
-    served.push(order);
-    saveBookings(bookings);
-    saveServed(served);
-    renderAll();
+  async function markServed(id) {
+    // get order
+    const snap = await get(ref(window.db, `orders/${id}`));
+    if (!snap.exists()) return;
+    const order = snap.val();
+    // remove from orders (active)
+    await remove(ref(window.db, `orders/${id}`));
+    // push into servedOrders
+    await push(servedRef, { ...order, status: "Served", time: order.time || new Date().toLocaleString() });
   }
 
-  function deleteActive(index){
-    const bookings = loadBookings();
-    if(!bookings[index]) return;
-    bookings.splice(index, 1);
-    saveBookings(bookings);
-    renderAll();
+  async function deleteOrder(id) {
+    if (!confirm("Delete this order?")) return;
+    await remove(ref(window.db, `orders/${id}`));
   }
 
-  // Clear history handler
-  if(clearHistoryBtn){
-    clearHistoryBtn.addEventListener('click', () => {
-      if(confirm('Clear all served orders history?')) {
-        localStorage.removeItem(SERVED_KEY);
-        renderAll();
-      }
-    });
+  async function clearHistory() {
+    if (!confirm("Clear all served orders history?")) return;
+    await remove(servedRef);
   }
 
-  function renderAll(){
-    renderActive();
-    renderServed();
-  }
+  // event delegation for action buttons
+  activeTbody.addEventListener("click", async (e) => {
+    const prepareBtn = e.target.closest(".prepare-btn");
+    const serveBtn = e.target.closest(".serve-btn");
+    const deleteBtn = e.target.closest(".delete-btn");
 
-  // Sync when localStorage changes in another tab
-  window.addEventListener('storage', (e) => {
-    if(!e.key || e.key === BOOKINGS_KEY || e.key === SERVED_KEY || e.key === 'tokenCounter'){
-      renderAll();
+    if (prepareBtn) {
+      await markPrepared(prepareBtn.dataset.id);
+    } else if (serveBtn) {
+      await markServed(serveBtn.dataset.id);
+    } else if (deleteBtn) {
+      await deleteOrder(deleteBtn.dataset.id);
     }
   });
 
-  // initial render
-  renderAll();
+  if (clearHistoryBtn) clearHistoryBtn.addEventListener("click", clearHistory);
 
-  // Debug helper - if nothing shows, check console to see detected key
-  console.log('staff.js loaded. Using bookings key:', BOOKINGS_KEY);
+  // realtime listeners
+  onValue(ordersRef, snap => {
+    renderActive(snap.val());
+  });
+  onValue(servedRef, snap => {
+    renderServed(snap.val());
+  });
 
+  console.log("staff.js realtime listener active");
 })();
