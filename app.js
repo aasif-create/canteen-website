@@ -1,15 +1,5 @@
   //1. app.js
-  
-  document.addEventListener('DOMContentLoaded', () => {
-  // ✅ Load tokenCounter from localStorage (if exists), else start at 1
-  let tokenCounter = localStorage.getItem("tokenCounter")
-    ? parseInt(localStorage.getItem("tokenCounter"))
-    : 1;
 
-  // --- Helpers --------------------------------------------------------------
-  const safeParse = (s) => {
-    try { return JSON.parse(s); } catch(e) { return null; }
-  };
 
   // --- Plus / Minus functionality -----------------------------------------
 
