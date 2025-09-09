@@ -1,0 +1,152 @@
+:root{
+  --orange: #ff6a00;
+  --yellow: #ffd200;
+  --bg-dark: rgba(0,0,0,0.7);
+  --muted: rgba(255,255,255,0.88);
+  --glass: rgba(0,0,0,0.35);
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+}
+
+/* reset */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body {height:100%;width:100%;background:#000;color:#fff}
+
+/* top nav */
+.top-nav{
+  position:fixed;left:0;right:0;top:0;z-index:40;
+  background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.02));
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.nav-inner{
+  max-width:1200px;margin:0 auto;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;
+}
+.mini-brand{color:rgba(255,255,255,0.95);font-weight:700;letter-spacing:0.6px;}
+.brand-right{display:flex;gap:12px}
+.nav-link{color:rgba(255,255,255,0.85);text-decoration:none;padding:6px 10px;border-radius:6px;font-weight:600}
+.nav-link:hover{color:var(--yellow)}
+
+/* hero */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 18px;
+  position:relative;
+  background-image: url('images/hero.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+/* overlay for contrast */
+.hero-overlay{
+  position:absolute;left:0;top:0;right:0;bottom:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.68) 60%, rgba(0,0,0,0.78) 100%);
+  z-index:1;
+}
+
+/* center stack */
+.hero-center{
+  position:relative;
+  z-index:3;
+  max-width:1100px;
+  width:100%;
+  text-align:center;
+  padding: 40px 20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:18px;
+}
+
+/* logo centered above title */
+.center-logo{
+  height:110px;
+  width:auto;
+  margin-bottom:8px;
+  border-radius:8px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+}
+
+/* big brand title */
+.brand-title{
+  font-size: clamp(32px, 8vw, 92px);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  justify-content:center;
+  line-height: 0.9;
+  margin-top:4px;
+}
+
+/* orange-yellow gradient words */
+.title-part{
+  background: linear-gradient(90deg, var(--orange), var(--yellow));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
+}
+
+/* ampersand white & bold */
+.amp{
+  color:#fff;
+  font-weight:900;
+  font-size:0.95em;
+  filter: drop-shadow(0 18px 30px rgba(0,0,0,0.65));
+}
+
+/* slogan */
+.tagline{
+  color: var(--muted);
+  font-size: clamp(15px, 2.1vw, 22px);
+  max-width:880px;
+  margin-top:8px;
+}
+.tag-highlight{
+  background: linear-gradient(90deg, var(--orange), var(--yellow));
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  font-weight: 700;
+  text-shadow: 0 8px 22px rgba(0,0,0,0.45);
+}
+
+/* CTA & links */
+.cta-line{margin-top:14px}
+.btn{
+  display:inline-block;padding:12px 26px;border-radius:12px;text-decoration:none;font-weight:800;
+}
+.btn-primary{
+  background: linear-gradient(90deg, var(--orange), var(--yellow));
+  color:#111;padding:14px 34px;font-size:18px;box-shadow:0 14px 40px rgba(255,110,40,0.18);
+  border:none;border-radius:12px;
+}
+.btn-primary:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(255,120,40,0.22)}
+
+/* small quick links (below CTA) */
+.quick-links{
+  display:flex;gap:18px;margin-top:12px;align-items:center;justify-content:center;
+}
+.link{
+  color:rgba(255,255,255,0.9);text-decoration:none;padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);font-weight:600;
+}
+.link:hover{background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.2)}
+
+/* footer */
+.site-foot{position:relative;z-index:3;text-align:center;margin-top:40px;color:rgba(255,255,255,0.6);font-size:13px;padding-bottom:22px}
+
+/* responsive */
+@media (max-width:900px){
+  .nav-right{display:none}
+  .center-logo{height:68px}
+  .brand-title{font-size:36px}
+  .tagline{font-size:15px}
+  .btn-primary{padding:12px 22px;font-size:16px}
+  .hero-center{padding:24px}
+}
