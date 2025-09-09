@@ -1,4 +1,19 @@
-// app.js (realtime - matches your index.html structure)
+  //1. app.js
+  
+  document.addEventListener('DOMContentLoaded', () => {
+  // ✅ Load tokenCounter from localStorage (if exists), else start at 1
+  let tokenCounter = localStorage.getItem("tokenCounter")
+    ? parseInt(localStorage.getItem("tokenCounter"))
+    : 1;
+
+  // --- Helpers --------------------------------------------------------------
+  const safeParse = (s) => {
+    try { return JSON.parse(s); } catch(e) { return null; }
+  };
+
+  // --- Plus / Minus functionality -----------------------------------------
+
+  // app.js (realtime - matches your index.html structure)
 import {
   ref, push, set, onValue, runTransaction, query, orderByChild, equalTo, get
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
