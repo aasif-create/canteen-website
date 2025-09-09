@@ -35,33 +35,40 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ---- Generate Bill (modal content) ----
-  generateBtn.addEventListener("click", () => {
-    const items = document.querySelectorAll(".single_menu");
-    modalBillItems.innerHTML = "";
-    let total = 0;
-    items.forEach(item => {
-      const name = item.querySelector("h4").childNodes[0].textContent.trim();
-      const priceText = item.querySelector("h4 span").textContent.replace("₹", "").trim();
-      const price = parseInt(priceText) || 0;
-      const qty = parseInt(item.querySelector(".quantity").value) || 0;
-      if (qty > 0) {
-        const amount = qty * price;
-        total += amount;
-        const li = document.createElement("li");
-        li.textContent = `${name} - Qty: ${qty} × ₹${price} = ₹${amount}`;
-        modalBillItems.appendChild(li);
-      }
-    });
+generateBtn.addEventListener("click", () => {
+  const items = document.querySelectorAll(".single_menu");
+  modalBillItems.innerHTML = ""; // clear
 
-    if (total > 0) {
-      tokenNumberEl.textContent = `🎟️ Token (will be assigned when you confirm)`;
-      modalGrandTotal.textContent = `Grand Total: ₹${total}`;
-      const billModal = new bootstrap.Modal(document.getElementById('billModal'));
-      billModal.show();
-    } else {
-      alert("Please select at least one item!");
+  let total = 0;
+  const ol = document.createElement("ol"); // ordered list
+
+  items.forEach(item => {
+    const name = item.querySelector("h4").childNodes[0].textContent.trim();
+    const priceText = item.querySelector("h4 span").textContent.replace("₹", "").trim();
+    const price = parseInt(priceText) || 0;
+    const qty = parseInt(item.querySelector(".quantity").value) || 0;
+
+    if (qty > 0) {
+      const amount = qty * price;
+      total += amount;
+
+      const li = document.createElement("li");
+      li.textContent = `${name} – Qty: ${qty} × ₹${price} = ₹${amount}`;
+      ol.appendChild(li);
     }
   });
+
+  if (total > 0) {
+    modalBillItems.appendChild(ol); // append the whole ordered list
+    tokenNumberEl.textContent = `🎟️ Token (will be assigned when you confirm)`;
+    modalGrandTotal.textContent = `Grand Total: ₹${total}`;
+    const billModal = new bootstrap.Modal(document.getElementById('billModal'));
+    billModal.show();
+  } else {
+    alert("Please select at least one item!");
+  }
+});
+
 
   // ---- Screenshot ----
   if (screenshotBtn) {
