@@ -1,23 +1,73 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fast and Foodious</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fast & Foodious — Break the Queue</title>
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&display=swap" rel="stylesheet">
+
+  <!-- main CSS -->
+  <link rel="stylesheet" href="home.css">
+
+  <!-- Optional: Bootstrap for consistent button look (remove if you don't want) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="hero">
-        <div class="content">
-            <h1>FAST & FOODIOUS</h1>
-            <p class="slogan">Fast bites. Faster service. Skip the line — grab the bite.</p>
-            <div class="buttons">
-                <a href="#" class="btn order">Order Now</a>
-                <a href="#" class="btn">Sign In</a>
-                <a href="#" class="btn">Sign Up</a>
-                <a href="#" class="btn">About Us</a>
-            </div>
+
+  <header class="site-header">
+    <nav class="nav container">
+      <div class="brand">
+        <!-- If you have the logo file, place it in images/logo.png -->
+        <img src="images/logo.png" alt="Fast & Foodious logo" class="brand-logo" onerror="this.style.display='none'">
+        <div class="brand-text">
+          <span class="brand-title">Fast & Foodious</span>
+          <span class="brand-tag">Break the Queue, Enjoy Something New.</span>
         </div>
+      </div>
+
+      <div class="nav-actions">
+        <a class="small-link" href="signin.html">Sign In</a>
+        <a class="small-link" href="signup.html">Sign Up</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-overlay"></div>
+
+      <div class="hero-content container">
+        <h1 class="hero-title">
+          <span class="accent">FAST</span> &amp; <span class="accent alt">FOODIOUS</span>
+        </h1>
+        <p class="hero-sub">Fast bites. Faster service. Skip the line — grab the bite.</p>
+
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="index.html">Order Now</a>
+          <a class="btn btn-outline-light btn-lg" href="about.html">About Us</a>
+        </div>
+
+        <div class="hero-actions-compact">
+          <a class="link-box" href="signin.html">Sign In</a>
+          <a class="link-box" href="signup.html">Sign Up</a>
+        </div>
+      </div>
+    </section>
+  </header>
+
+  <!-- small footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <small>© <strong>Fast & Foodious</strong> • Break the Queue, Enjoy Something New.</small>
     </div>
+  </footer>
+
+  <!-- optional tiny script for small animations -->
+  <script>
+    // add subtle entrance animation
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelector('.hero-content').classList.add('visible');
+    });
+  </script>
 </body>
 </html>
