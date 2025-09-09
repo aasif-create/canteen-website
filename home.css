@@ -9,7 +9,11 @@
 
 /* reset */
 *{box-sizing:border-box;margin:0;padding:0}
+
 html,body {height:100%;width:100%;background:#000;color:#fff; -webkit-font-smoothing:antialiased; font-smooth:always;}
+
+html,body {height:100%;width:100%;background:#000;color:#fff}
+
 
 /* top nav */
 .top-nav{
@@ -23,6 +27,10 @@ html,body {height:100%;width:100%;background:#000;color:#fff; -webkit-font-smoot
 }
 .mini-brand{color:rgba(255,255,255,0.95);font-weight:700;letter-spacing:0.6px;}
 .nav-space{width:120px} /* keeps layout centered visually on wide screens */
+
+.brand-right{display:flex;gap:12px}
+.nav-link{color:rgba(255,255,255,0.85);text-decoration:none;padding:6px 10px;border-radius:6px;font-weight:600}
+.nav-link:hover{color:var(--yellow)}
 
 /* hero */
 .hero{
@@ -150,6 +158,7 @@ html,body {height:100%;width:100%;background:#000;color:#fff; -webkit-font-smoot
   background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
 }
 
+
 /* footer */
 .site-foot{position:relative;z-index:3;text-align:center;margin-top:40px;color:rgba(255,255,255,0.6);font-size:13px;padding-bottom:22px}
 
@@ -166,3 +175,4 @@ html,body {height:100%;width:100%;background:#000;color:#fff; -webkit-font-smoot
   /* disable background-attachment on small screens to avoid performance issues */
   .hero{background-attachment: scroll;}
 }
+
